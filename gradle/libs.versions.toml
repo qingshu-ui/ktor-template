@@ -1,0 +1,38 @@
+[versions]
+group = "me.qingshu"
+version = "1.0-SNAPSHOT"
+mainClass = "me.qingshu.ktorexample.ApplicationKt"
+
+kotlin-version = "2.1.10"
+ktor-version = "3.2.1"
+logback-version = "1.5.13"
+cssDsl-version = "2025.7.3"
+exposed-version = "0.61.0"
+sqlLite-version = "3.45.2.0"
+serializationJson-version = "1.9.0"
+flexmark-version = "0.64.8"
+koin-version = "4.1.0"
+
+[libraries]
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor-version" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor-version" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor-version" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin-version" }
+htmlDsl = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor-version" }
+cssDsl = { module = "org.jetbrains.kotlin-wrappers:kotlin-css", version.ref = "cssDsl-version" }
+exposedCore = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed-version" }
+exposedJdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed-version" }
+exposedDao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed-version" }
+sqlLite = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlLite-version" }
+kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson-version" }
+flexmarkAll = { module = "com.vladsch.flexmark:flexmark-all", version.ref = "flexmark-version" }
+koinCore = { module = "io.insert-koin:koin-core", version.ref = "koin-version" }
+koinTest = { module = "io.insert-koin:koin-test", version.ref = "koin-version" }
+koinKtor = { module = "io.insert-koin:koin-ktor", version.ref = "koin-version" }
+koinLogger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin-version" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-version" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor-version" }
