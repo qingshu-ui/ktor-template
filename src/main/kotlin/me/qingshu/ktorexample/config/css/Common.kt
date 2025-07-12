@@ -17,9 +17,14 @@ fun Application.configureCss() = routing {
                 alignItems = Align.center
                 justifyContent = JustifyContent.center
             }
-            rule("h1.page-title") {
+            rule(".page-title") {
                 color = Color.white
             }
+        }
+    }
+    get("/login.css") {
+        call.respondCss {
+            loginStyles()
         }
     }
 }

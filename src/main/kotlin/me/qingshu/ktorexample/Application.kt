@@ -4,6 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import me.qingshu.ktorexample.config.appModule
+import me.qingshu.ktorexample.config.configureAuth
 import me.qingshu.ktorexample.config.css.configureCss
 import me.qingshu.ktorexample.repository.UserRepository
 import me.qingshu.ktorexample.routing.configureRouting
@@ -27,6 +28,7 @@ fun Application.module() {
         modules(appModule)
         logger(SLF4JLogger())
     }
+    configureAuth()
     configureRouting()
     configureCss()
 }

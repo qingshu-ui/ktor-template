@@ -12,6 +12,8 @@ sqlLite-version = "3.45.2.0"
 serializationJson-version = "1.9.0"
 flexmark-version = "0.64.8"
 koin-version = "4.1.0"
+bcrypt-version = "0.10.2"
+jwt-version = "4.4.0"
 
 [libraries]
 ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor-version" }
@@ -33,6 +35,8 @@ koinCore = { module = "io.insert-koin:koin-core", version.ref = "koin-version" }
 koinTest = { module = "io.insert-koin:koin-test", version.ref = "koin-version" }
 koinKtor = { module = "io.insert-koin:koin-ktor", version.ref = "koin-version" }
 koinLogger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin-version" }
+bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "bcrypt-version" }
+jwt = { module = "com.auth0:java-jwt", version.ref = "jwt-version" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }

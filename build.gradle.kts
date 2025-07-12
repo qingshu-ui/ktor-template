@@ -33,6 +33,8 @@ dependencies {
     implementation(libs.koinCore)
     implementation(libs.koinLogger)
     implementation(libs.koinKtor)
+    implementation(libs.bcrypt)
+    implementation(libs.jwt)
     testImplementation(libs.koinTest)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)

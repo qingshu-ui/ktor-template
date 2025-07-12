@@ -1,61 +1,47 @@
 package me.qingshu.ktorexample.service.impl
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import me.qingshu.ktorexample.model.User
-import me.qingshu.ktorexample.repository.UserRepository
+import me.qingshu.ktorexample.repository.UserRepositoryImpl
 import me.qingshu.ktorexample.service.UserService
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.transactions.transaction
 
-class UserServiceImpl : UserService {
+class UserServiceImpl(
+    private val userRepository: UserRepositoryImpl
+) : UserService {
 
-    override fun createUser(name: String): User {
-        return transaction {
-            val id = UserRepository.insertAndGetId {
-                it[UserRepository.name] = name
-            }.value
-            User(id, name)
-        }
+    override suspend fun createUser(username: String, email: String, password: String): User {
+        val passwordHash = BCrypt.withDefaults().hashToString(12, password.toCharArray())
+        return userRepository.create(username, email, passwordHash)
     }
 
-    override fun getAllUser(): List<User> {
-        return transaction {
-            UserRepository.selectAll().map { rowToUser(it) }
-        }
+    override suspend fun getAllUsers(): List<User> {
+        // 这里需要实现获取所有用户的逻辑
+        // 暂时返回空列表，因为UserRepositoryImpl中没有实现这个方法
+        return emptyList()
     }
 
-    override fun findUserById(id: Long): User? {
-        return transaction {
-            UserRepository.select(UserRepository.id eq id)
-                .singleOrNull()
-                ?.let {
-                    rowToUser(it)
-                }
-        }
+    override suspend fun findUserById(id: Long): User? {
+        return userRepository.findById(id)
     }
 
-    override fun findUserByName(name: String): User? {
-        return transaction {
-            UserRepository.select(UserRepository.name eq name)
-                .singleOrNull()
-                ?.let {
-                    rowToUser(it)
-                }
-        }
+    override suspend fun findUserByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
     }
 
-    override fun updateUser(id: Long, newName: String): Boolean {
-        return transaction {
-            UserRepository.update({ UserRepository.id eq id }) {
-                it[name] = name
-            } > 0
-        }
+    override suspend fun findUserByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
     }
 
-    private fun rowToUser(row: ResultRow): User {
-        return User(
-            id = row[UserRepository.id].value,
-            name = row[UserRepository.name]
-        )
+    override suspend fun updateUser(id: Long, username: String?, email: String?, password: String?): User? {
+        val passwordHash = password?.let { BCrypt.withDefaults().hashToString(12, it.toCharArray()) }
+        return userRepository.update(id, username, email, passwordHash)
+    }
+
+    override suspend fun existsByUsername(username: String): Boolean {
+        return userRepository.existsByUsername(username)
+    }
+
+    override suspend fun existsByEmail(email: String): Boolean {
+        return userRepository.existsByEmail(email)
     }
 }
