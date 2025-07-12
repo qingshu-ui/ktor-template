@@ -5,6 +5,7 @@ import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
@@ -28,7 +29,8 @@ class UserRepositoryImpl {
      * 根据用户名查找用户
      */
     fun findByUsername(username: String): User? = transaction {
-        UserRepository.select(UserRepository.username eq username)
+        UserRepository.selectAll()
+            .where { UserRepository.username eq username }
             .map { rowToUser(it) }
             .singleOrNull()
     }
@@ -37,7 +39,8 @@ class UserRepositoryImpl {
      * 根据邮箱查找用户
      */
     fun findByEmail(email: String): User? = transaction {
-        UserRepository.select(UserRepository.email eq email)
+        UserRepository.selectAll()
+            .where(UserRepository.email eq email)
             .map { rowToUser(it) }
             .singleOrNull()
     }
@@ -46,7 +49,8 @@ class UserRepositoryImpl {
      * 根据ID查找用户
      */
     fun findById(id: Long): User? = transaction {
-        UserRepository.select(UserRepository.id eq id)
+        UserRepository.selectAll()
+            .where(UserRepository.id eq id)
             .map { rowToUser(it) }
             .singleOrNull()
     }
@@ -96,14 +100,14 @@ class UserRepositoryImpl {
      * 检查用户名是否存在
      */
     fun existsByUsername(username: String): Boolean = transaction {
-        UserRepository.select (UserRepository.username eq username).count() > 0
+        UserRepository.selectAll().where(UserRepository.username eq username).count() > 0
     }
 
     /**
      * 检查邮箱是否存在
      */
     fun existsByEmail(email: String): Boolean = transaction {
-        UserRepository.select (UserRepository.email eq email).count() > 0
+        UserRepository.selectAll().where(UserRepository.email eq email).count() > 0
     }
 
     /**
