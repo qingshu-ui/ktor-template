@@ -21,9 +21,25 @@ fun Application.configureRouting() = routing {
     route("/users") {
         val userService: UserService by inject()
         get {
-            call.respondText {
-                GlobalJson {
-                    encodeToString(userService.getAllUser())
+            val username = call.queryParameters["name"] ?: ""
+            val id = call.queryParameters["id"]?.toLong() ?: -1
+            if (username.isNotBlank()) {
+                call.respondText {
+                    GlobalJson {
+                        encodeToString(userService.findUserByName(username))
+                    }
+                }
+            } else if (id != -1L) {
+                call.respondText {
+                    GlobalJson {
+                        encodeToString(userService.findUserById(id))
+                    }
+                }
+            } else {
+                call.respondText {
+                    GlobalJson {
+                        encodeToString(userService.getAllUser())
+                    }
                 }
             }
         }

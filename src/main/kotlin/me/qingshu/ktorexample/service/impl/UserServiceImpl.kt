@@ -26,7 +26,9 @@ class UserServiceImpl : UserService {
 
     override fun findUserById(id: Long): User? {
         return transaction {
-            UserRepository.select(UserRepository.id eq id)
+            addLogger(StdOutSqlLogger)
+            UserRepository.selectAll()
+                .where { UserRepository.id eq id }
                 .singleOrNull()
                 ?.let {
                     rowToUser(it)
@@ -36,7 +38,9 @@ class UserServiceImpl : UserService {
 
     override fun findUserByName(name: String): User? {
         return transaction {
-            UserRepository.select(UserRepository.name eq name)
+            addLogger(StdOutSqlLogger)
+            UserRepository.selectAll()
+                .where { UserRepository.name eq name }
                 .singleOrNull()
                 ?.let {
                     rowToUser(it)
