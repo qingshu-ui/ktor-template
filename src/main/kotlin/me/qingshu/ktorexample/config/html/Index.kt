@@ -2,23 +2,64 @@ package me.qingshu.ktorexample.config.html
 
 import kotlinx.html.*
 
-fun HTML.index(username: String = "", email: String = "") {
+fun HTML.index() {
     head {
-        link(rel = "stylesheet", href = "/common.css", type = "text/css")
+        link(rel = "stylesheet", href = "/index_style.css", type = "text/css")
     }
     body {
-        h1(classes = "page-title") {
-            +"This a template project! Thanks."
-        }
-        if (username.isNotEmpty()) {
-            p(classes = "subtitle") {
-                +username
+        background {
+            content {
+                sidebar()
             }
         }
-        if (email.isNotEmpty()) {
-            p("subtitle2") {
-                +email
+    }
+}
+
+fun BODY.background(block: DIV.() -> Unit) {
+    div(classes = "background") {
+        block()
+    }
+}
+
+fun DIV.content(block: DIV.() -> Unit) {
+    div(classes = "content") {
+        block()
+    }
+}
+
+fun DIV.sidebar(
+    title: String = "Demo.",
+    items: List<String> = listOf(
+        "Dashboard",
+        "Posts",
+        "Categories",
+        "Media",
+        "Users",
+        "Settings",
+    ),
+) {
+    div(classes = "sidebar") {
+        div(classes = "user-info") {
+            div(classes = "user-avatar") {
+
             }
+            div("user-nickname") {
+                +title
+            }
+        }
+        // items
+        div("menu-items") {
+            repeat(items.size) { index ->
+                div("menu-item") {
+                    +items[index]
+                }
+            }
+        }
+
+        // guide
+        div("bottom-card") {
+            +"User Guide"
+            +"documentation"
         }
     }
 }

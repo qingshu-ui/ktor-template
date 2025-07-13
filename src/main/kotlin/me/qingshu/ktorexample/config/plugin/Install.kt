@@ -9,12 +9,7 @@ import me.qingshu.ktorexample.service.AuthService
 import org.koin.ktor.ext.inject
 import kotlin.time.Duration.Companion.days
 
-fun Application.configurePlugin() {
-    configureSessions()
-    configureAuthentication()
-}
-
-private fun Application.configureSessions() {
+fun Application.configureSessions() {
     install(Sessions) {
         cookie<UserSession>("auth_session") {
             cookie.maxAge = 7.days
@@ -22,7 +17,7 @@ private fun Application.configureSessions() {
     }
 }
 
-private fun Application.configureAuthentication() {
+fun Application.configureAuthentication() {
     val authService: AuthService by inject()
     install(Authentication) {
         session<UserSession>("auth_session") {

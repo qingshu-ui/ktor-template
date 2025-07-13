@@ -1,6 +1,7 @@
 package me.qingshu.ktorexample.routing
 
 import io.ktor.http.*
+import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -19,134 +20,137 @@ import kotlin.time.DurationUnit
 /**
  * 认证路由配置
  */
-fun Route.authRouting() {
+fun Application.authRouting() {
 
     val authService: AuthService by inject()
     val userService: UserService by inject()
     val passwordService: PasswordEncoderService by inject()
 
-    route("/login") {
+    routing {
 
-        post {
-            val params = call.receiveParameters()
-            val username = params["username"] ?: ""
-            val password = params["password"] ?: ""
-            val rememberMe = params["rememberMe"]?.toBoolean() ?: false
-            val session = authService.authenticate(username, password)
+        route("/login") {
 
-            if (session != null) {
-                val cookie = Cookie(
-                    name = "session_id",
-                    value = session.sessionId,
-                    maxAge = (session.expiresAt - Clock.System.now()).toInt(DurationUnit.SECONDS),
-                    httpOnly = true
-                )
-                call.sessions.set(session)
-                call.response.cookies.append(
-                    cookie
-                )
-                call.respondRedirect("/", permanent = false)
-            } else {
-                val redirectUrl = buildString {
-                    append("/login?error=${URLEncoder.encode("账户不存在", "UTF-8")}")
-                    if (username.isNotEmpty()) {
-                        append("&username=${URLEncoder.encode(username, "UTF-8")}")
-                    }
-                    if (rememberMe) append("&rememberMe=true")
-                }
-                call.respondRedirect(redirectUrl, permanent = false)
-            }
-        }
-
-        get {
-            val errorMessage = call.parameters["error"]
-            val successMessage = call.parameters["success"]
-            val username = call.parameters["username"] ?: ""
-            val rememberMe = call.parameters["rememberMe"]?.toBoolean() ?: false
-
-            call.respondHtml {
-                loginPage(
-                    errorMessage = errorMessage,
-                    successMessage = successMessage,
-                    username = username,
-                    rememberMe = rememberMe
-                )
-            }
-        }
-    }
-
-    route("/register") {
-
-        get {
-            val errorMessage = call.parameters["error"]
-            val successMessage = call.parameters["success"]
-            val username = call.parameters["username"] ?: ""
-            val email = call.parameters["email"] ?: ""
-
-            call.respondHtml {
-                registerPage(
-                    errorMessage = errorMessage,
-                    successMessage = successMessage,
-                    username = username,
-                    email = email
-                )
-            }
-        }
-
-        post {
-            try {
+            post {
                 val params = call.receiveParameters()
                 val username = params["username"] ?: ""
-                val email = params["email"] ?: ""
                 val password = params["password"] ?: ""
-                val confirmPassword = params["confirmPassword"] ?: ""
+                val rememberMe = params["rememberMe"]?.toBoolean() ?: false
+                val session = authService.authenticate(username, password)
 
-                if (password != confirmPassword) {
-                    val redirectUrl = buildString {
-                        append("/register?error=${URLEncoder.encode("两次输入的密码不一致", "UTF-8")}")
-                        if (username.isNotEmpty()) {
-                            append("&username=${URLEncoder.encode(username, "UTF-8")}")
-                        }
-                        if (email.isNotEmpty()) {
-                            append("&email=${URLEncoder.encode(email, "UTF-8")}")
-                        }
-                    }
-                    call.respondRedirect(redirectUrl, permanent = false)
-                }
-
-                val existUserName = userService.existsByUsername(username)
-                val existEmail = userService.existsByEmail(email)
-                if (!existUserName && !existEmail) {
-                    userService.createUser(username, email, passwordService.hash(password))
-                    call.respondRedirect("/login")
+                if (session != null) {
+                    val cookie = Cookie(
+                        name = "session_id",
+                        value = session.sessionId,
+                        maxAge = (session.expiresAt - Clock.System.now()).toInt(DurationUnit.SECONDS),
+                        httpOnly = true
+                    )
+                    call.sessions.set(session)
+                    call.response.cookies.append(
+                        cookie
+                    )
+                    call.respondRedirect("/", permanent = false)
                 } else {
-                    // 重定向回注册页面并显示错误信息
                     val redirectUrl = buildString {
-                        append("/register?error=${URLEncoder.encode("账户或邮箱已存在", "UTF-8")}")
+                        append("/login?error=${URLEncoder.encode("账户不存在", "UTF-8")}")
                         if (username.isNotEmpty()) {
                             append("&username=${URLEncoder.encode(username, "UTF-8")}")
                         }
-                        if (email.isNotEmpty()) {
-                            append("&email=${URLEncoder.encode(email, "UTF-8")}")
-                        }
+                        if (rememberMe) append("&rememberMe=true")
                     }
                     call.respondRedirect(redirectUrl, permanent = false)
                 }
-            } catch (_: Throwable) {
-                val redirectUrl = "/register?error=${URLEncoder.encode("注册过程中发生错误", "UTF-8")}"
-                call.respondRedirect(redirectUrl, permanent = false)
+            }
+
+            get {
+                val errorMessage = call.parameters["error"]
+                val successMessage = call.parameters["success"]
+                val username = call.parameters["username"] ?: ""
+                val rememberMe = call.parameters["rememberMe"]?.toBoolean() ?: false
+
+                call.respondHtml {
+                    loginPage(
+                        errorMessage = errorMessage,
+                        successMessage = successMessage,
+                        username = username,
+                        rememberMe = rememberMe
+                    )
+                }
             }
         }
 
-        post("/logout") {
-            call.response.cookies.append(
-                Cookie(
-                    name = "user_session",
-                    value = "",
-                    maxAge = 0,
+        route("/register") {
+
+            get {
+                val errorMessage = call.parameters["error"]
+                val successMessage = call.parameters["success"]
+                val username = call.parameters["username"] ?: ""
+                val email = call.parameters["email"] ?: ""
+
+                call.respondHtml {
+                    registerPage(
+                        errorMessage = errorMessage,
+                        successMessage = successMessage,
+                        username = username,
+                        email = email
+                    )
+                }
+            }
+
+            post {
+                try {
+                    val params = call.receiveParameters()
+                    val username = params["username"] ?: ""
+                    val email = params["email"] ?: ""
+                    val password = params["password"] ?: ""
+                    val confirmPassword = params["confirmPassword"] ?: ""
+
+                    if (password != confirmPassword) {
+                        val redirectUrl = buildString {
+                            append("/register?error=${URLEncoder.encode("两次输入的密码不一致", "UTF-8")}")
+                            if (username.isNotEmpty()) {
+                                append("&username=${URLEncoder.encode(username, "UTF-8")}")
+                            }
+                            if (email.isNotEmpty()) {
+                                append("&email=${URLEncoder.encode(email, "UTF-8")}")
+                            }
+                        }
+                        call.respondRedirect(redirectUrl, permanent = false)
+                    }
+
+                    val existUserName = userService.existsByUsername(username)
+                    val existEmail = userService.existsByEmail(email)
+                    if (!existUserName && !existEmail) {
+                        userService.createUser(username, email, passwordService.hash(password))
+                        call.respondRedirect("/login")
+                    } else {
+                        // 重定向回注册页面并显示错误信息
+                        val redirectUrl = buildString {
+                            append("/register?error=${URLEncoder.encode("账户或邮箱已存在", "UTF-8")}")
+                            if (username.isNotEmpty()) {
+                                append("&username=${URLEncoder.encode(username, "UTF-8")}")
+                            }
+                            if (email.isNotEmpty()) {
+                                append("&email=${URLEncoder.encode(email, "UTF-8")}")
+                            }
+                        }
+                        call.respondRedirect(redirectUrl, permanent = false)
+                    }
+                } catch (_: Throwable) {
+                    val redirectUrl = "/register?error=${URLEncoder.encode("注册过程中发生错误", "UTF-8")}"
+                    call.respondRedirect(redirectUrl, permanent = false)
+                }
+            }
+
+            post("/logout") {
+                call.response.cookies.append(
+                    Cookie(
+                        name = "user_session",
+                        value = "",
+                        maxAge = 0,
+                    )
                 )
-            )
-            call.respondRedirect("/login?success=${URLEncoder.encode("已成功登出", "UTF-8")}", permanent = false)
+                call.respondRedirect("/login?success=${URLEncoder.encode("已成功登出", "UTF-8")}", permanent = false)
+            }
         }
     }
 
