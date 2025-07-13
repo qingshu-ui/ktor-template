@@ -4,9 +4,10 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import me.qingshu.ktorexample.config.appModule
-import me.qingshu.ktorexample.config.configureAuth
 import me.qingshu.ktorexample.config.css.configureCss
-import me.qingshu.ktorexample.repository.UserRepository
+import me.qingshu.ktorexample.config.plugin.configurePlugin
+import me.qingshu.ktorexample.repository.SessionTable
+import me.qingshu.ktorexample.repository.UserTable
 import me.qingshu.ktorexample.routing.configureRouting
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -21,7 +22,7 @@ fun main() {
         }
         watchPaths = listOf(
             "classes",
-            "res/main/resources"
+            "resources"
         )
         developmentMode = true
     }
@@ -36,13 +37,14 @@ fun main() {
 fun Application.module() {
     Database.connect(url = "jdbc:sqlite:ktor-template.db", driver = "org.sqlite.JDBC")
     transaction {
-        SchemaUtils.create(UserRepository)
+        SchemaUtils.create(UserTable, SessionTable)
     }
     startKoin {
         modules(appModule)
         logger(SLF4JLogger())
     }
-    configureAuth()
+
+    configurePlugin()
     configureRouting()
     configureCss()
 }

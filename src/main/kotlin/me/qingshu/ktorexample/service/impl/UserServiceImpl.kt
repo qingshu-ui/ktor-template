@@ -2,15 +2,15 @@ package me.qingshu.ktorexample.service.impl
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import me.qingshu.ktorexample.model.User
-import me.qingshu.ktorexample.repository.UserRepositoryImpl
+import me.qingshu.ktorexample.repository.UserRepository
 import me.qingshu.ktorexample.service.UserService
 
 class UserServiceImpl(
-    private val userRepository: UserRepositoryImpl
+    private val userRepository: UserRepository
 ) : UserService {
 
-    override suspend fun createUser(username: String, email: String, password: String): User {
-        val passwordHash = BCrypt.withDefaults().hashToString(12, password.toCharArray())
+    override suspend fun createUser(username: String, email: String, passwordHash: String): User {
+        // val passwordHash = BCrypt.withDefaults().hashToString(12, passwordHash.toCharArray())
         return userRepository.create(username, email, passwordHash)
     }
 

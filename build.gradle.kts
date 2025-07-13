@@ -17,9 +17,9 @@ repositories {
 
 dependencies {
     implementation(libs.ktor.server.auth)
-    implementation(libs.ktor.server.authJwt)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.sessions)
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.core)
     implementation(libs.htmlDsl)
@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.exposedCore)
     implementation(libs.exposedJdbc)
     implementation(libs.exposedDao)
+    implementation(libs.exposedDateTime)
     implementation(libs.sqlLite)
     implementation(libs.kotlinx.serializationJson)
     implementation(libs.flexmarkAll)
@@ -34,7 +35,6 @@ dependencies {
     implementation(libs.koinLogger)
     implementation(libs.koinKtor)
     implementation(libs.bcrypt)
-    implementation(libs.jwt)
     testImplementation(libs.koinTest)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)

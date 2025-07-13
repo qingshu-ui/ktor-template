@@ -3,7 +3,7 @@ package me.qingshu.ktorexample.service
 import me.qingshu.ktorexample.model.User
 
 interface UserService {
-    suspend fun createUser(username: String, email: String, password: String): User
+    suspend fun createUser(username: String, email: String, passwordHash: String): User
     suspend fun findUserById(id: Long): User?
     suspend fun findUserByUsername(username: String): User?
     suspend fun findUserByEmail(email: String): User?

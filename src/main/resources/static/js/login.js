@@ -9,11 +9,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const rememberMe = document.getElementById('rememberMe');
 
     // 密码显示/隐藏切换
-    passwordToggle.addEventListener('click', function() {
-        const type = passwordInput.type === 'password' ? 'text' : 'password';
-        passwordInput.type = type;
-        passwordToggle.textContent = type === 'password' ? '👁' : '🙈';
-    });
+    function initPasswordToggles() {
+        const toggles = document.querySelectorAll('.password-toggle');
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const container = this.closest('.password-container');
+                const input = container.querySelector('input');
+
+                if(input) {
+                    const type = input.type === 'password' ? 'text' : 'password';
+                    input.type = type
+                    this.textContent = type === 'password' ? '👁' : '🙈';
+                }
+            });
+        });
+    }
+    initPasswordToggles();
 
     // 表单验证
     function validateForm() {
@@ -39,18 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 表单提交处理
-    form.addEventListener('submit', function(e) {
-        if (!validateForm()) {
-            e.preventDefault();
-            return;
-        }
+    if(form) {
+        form.addEventListener('submit', function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                return;
+            }
 
-        // 显示加载状态
-        loginButton.disabled = true;
-        loginButton.classList.add('loading');
-        loginText.style.display = 'none';
-        loginSpinner.style.display = 'inline-block';
-    });
+            // 显示加载状态
+            loginButton.disabled = true;
+            loginButton.classList.add('loading');
+            loginText.style.display = 'none';
+            loginSpinner.style.display = 'inline-block';
+        });
+    }
 
     // 实时验证
     usernameInput.addEventListener('blur', function() {
@@ -83,10 +97,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 保存记住我选项状态到本地存储
-    rememberMe.addEventListener('change', function(e) {
-        localStorage.setItem('rememberMe', this.checked)
-    });
     if(rememberMe) {
-        rememberMe.checked = localStorage.getItem('rememberMe') === 'true'
+        rememberMe.addEventListener('change', function(e) {
+            localStorage.setItem('rememberMe', this.checked)
+        });
+        if(rememberMe) {
+            rememberMe.checked = localStorage.getItem('rememberMe') === 'true'
+        }
     }
 });

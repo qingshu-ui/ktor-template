@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.update
 /**
  * 用户数据表定义
  */
-object UserRepository : LongIdTable("users") {
+object UserTable : LongIdTable() {
     val username = varchar("username", 255).uniqueIndex()
     val email = varchar("email", 255).uniqueIndex()
     val passwordHash = varchar("password_hash", 255)
@@ -23,14 +23,14 @@ object UserRepository : LongIdTable("users") {
 /**
  * 用户数据访问对象
  */
-class UserRepositoryImpl {
+class UserRepository {
 
     /**
      * 根据用户名查找用户
      */
     fun findByUsername(username: String): User? = transaction {
-        UserRepository.selectAll()
-            .where { UserRepository.username eq username }
+        UserTable.selectAll()
+            .where { UserTable.username eq username }
             .map { rowToUser(it) }
             .singleOrNull()
     }
@@ -39,8 +39,8 @@ class UserRepositoryImpl {
      * 根据邮箱查找用户
      */
     fun findByEmail(email: String): User? = transaction {
-        UserRepository.selectAll()
-            .where(UserRepository.email eq email)
+        UserTable.selectAll()
+            .where(UserTable.email eq email)
             .map { rowToUser(it) }
             .singleOrNull()
     }
@@ -49,8 +49,8 @@ class UserRepositoryImpl {
      * 根据ID查找用户
      */
     fun findById(id: Long): User? = transaction {
-        UserRepository.selectAll()
-            .where(UserRepository.id eq id)
+        UserTable.selectAll()
+            .where(UserTable.id eq id)
             .map { rowToUser(it) }
             .singleOrNull()
     }
@@ -59,12 +59,12 @@ class UserRepositoryImpl {
      * 创建新用户
      */
     fun create(username: String, email: String, passwordHash: String): User = transaction {
-        val id = UserRepository.insertAndGetId {
-            it[UserRepository.username] = username
-            it[UserRepository.email] = email
-            it[UserRepository.passwordHash] = passwordHash
-            it[UserRepository.createdAt] = System.currentTimeMillis()
-            it[UserRepository.updatedAt] = System.currentTimeMillis()
+        val id = UserTable.insertAndGetId {
+            it[UserTable.username] = username
+            it[UserTable.email] = email
+            it[UserTable.passwordHash] = passwordHash
+            it[UserTable.createdAt] = System.currentTimeMillis()
+            it[UserTable.updatedAt] = System.currentTimeMillis()
         }
 
         User(
@@ -82,11 +82,11 @@ class UserRepositoryImpl {
      */
     fun update(id: Long, username: String? = null, email: String? = null, passwordHash: String? = null): User? =
         transaction {
-            val updateStatement = UserRepository.update({ UserRepository.id eq id }) { table ->
-                username?.let { table[UserRepository.username] = it }
-                email?.let { table[UserRepository.email] = it }
-                passwordHash?.let { table[UserRepository.passwordHash] = it }
-                table[UserRepository.updatedAt] = System.currentTimeMillis()
+            val updateStatement = UserTable.update({ UserTable.id eq id }) { table ->
+                username?.let { table[UserTable.username] = it }
+                email?.let { table[UserTable.email] = it }
+                passwordHash?.let { table[UserTable.passwordHash] = it }
+                table[UserTable.updatedAt] = System.currentTimeMillis()
             }
 
             if (updateStatement > 0) {
@@ -100,25 +100,25 @@ class UserRepositoryImpl {
      * 检查用户名是否存在
      */
     fun existsByUsername(username: String): Boolean = transaction {
-        UserRepository.selectAll().where(UserRepository.username eq username).count() > 0
+        UserTable.selectAll().where(UserTable.username eq username).count() > 0
     }
 
     /**
      * 检查邮箱是否存在
      */
     fun existsByEmail(email: String): Boolean = transaction {
-        UserRepository.selectAll().where(UserRepository.email eq email).count() > 0
+        UserTable.selectAll().where(UserTable.email eq email).count() > 0
     }
 
     /**
      * 将数据库行转换为User对象
      */
     private fun rowToUser(row: ResultRow): User = User(
-        id = row[UserRepository.id].value,
-        username = row[UserRepository.username],
-        email = row[UserRepository.email],
-        passwordHash = row[UserRepository.passwordHash],
-        createdAt = row[UserRepository.createdAt],
-        updatedAt = row[UserRepository.updatedAt]
+        id = row[UserTable.id].value,
+        username = row[UserTable.username],
+        email = row[UserTable.email],
+        passwordHash = row[UserTable.passwordHash],
+        createdAt = row[UserTable.createdAt],
+        updatedAt = row[UserTable.updatedAt]
     )
 }
