@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('loginButton');
     const loginText = document.getElementById('loginText');
     const loginSpinner = document.getElementById('loginSpinner');
+    const rememberMe = document.getElementById('rememberMe');
 
     // 密码显示/隐藏切换
     passwordToggle.addEventListener('click', function() {
@@ -80,4 +81,12 @@ document.addEventListener('DOMContentLoaded', function() {
             form.submit();
         }
     });
+
+    // 保存记住我选项状态到本地存储
+    rememberMe.addEventListener('change', function(e) {
+        localStorage.setItem('rememberMe', this.checked)
+    });
+    if(rememberMe) {
+        rememberMe.checked = localStorage.getItem('rememberMe') === 'true'
+    }
 });

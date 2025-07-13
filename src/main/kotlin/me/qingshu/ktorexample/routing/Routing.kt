@@ -1,6 +1,5 @@
 package me.qingshu.ktorexample.routing
 
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
@@ -41,10 +40,10 @@ fun Application.configureRouting() = routing {
     }
 
     staticResources("/static", "static") {
-        cacheControl {
-            return@cacheControl listOf(
-                CacheControl.MaxAge(365 * 24 * 60 * 60)
-            )
-        }
+        // cacheControl {
+        //     listOf(
+        //         CacheControl.MaxAge(60)
+        //     )
+        // }
     }
 }

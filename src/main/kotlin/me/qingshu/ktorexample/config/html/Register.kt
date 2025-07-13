@@ -35,23 +35,9 @@ fun HTML.registerPage(
                 classes = setOf("login-card")
 
                 // Logo区域
-                div {
-                    classes = setOf("logo-area")
-
-                    div {
-                        classes = setOf("logo")
-                        +"K"
-                    }
-
-                    h1 {
-                        classes = setOf("title")
-                        +"创建账户"
-                    }
-
-                    p {
-                        classes = setOf("subtitle")
-                        +"请填写以下信息完成注册"
-                    }
+                logoArea {
+                    title = "创建账户"
+                    subtitle = "请填写以下信息完成注册"
                 }
 
                 // 错误消息

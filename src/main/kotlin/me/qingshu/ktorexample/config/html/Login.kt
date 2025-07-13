@@ -35,23 +35,9 @@ fun HTML.loginPage(
                 classes = setOf("login-card")
 
                 // Logo区域
-                div {
-                    classes = setOf("logo-area")
-
-                    div {
-                        classes = setOf("logo")
-                        +"K"
-                    }
-
-                    h1 {
-                        classes = setOf("title")
-                        +"欢迎回来"
-                    }
-
-                    p {
-                        classes = setOf("subtitle")
-                        +"请登录您的账户"
-                    }
+                logoArea {
+                    title = "欢迎回来"
+                    subtitle = "请登录您的账户"
                 }
 
                 // 错误消息

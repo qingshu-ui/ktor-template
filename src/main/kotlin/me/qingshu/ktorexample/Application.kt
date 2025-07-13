@@ -15,8 +15,22 @@ import org.koin.core.context.startKoin
 import org.koin.logger.SLF4JLogger
 
 fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
+    val appProperties = serverConfig {
+        module {
+            module()
+        }
+        watchPaths = listOf(
+            "classes",
+            "res/main/resources"
+        )
+        developmentMode = true
+    }
+    embeddedServer(Netty, appProperties) {
+        connector {
+            port = 8080
+            host = "0.0.0.0"
+        }
+    }.start(wait = true)
 }
 
 fun Application.module() {
