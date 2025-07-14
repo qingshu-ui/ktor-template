@@ -10,6 +10,7 @@ fun HTML.index() {
         background {
             content {
                 sidebar()
+                dashBoard()
             }
         }
     }
@@ -58,8 +59,84 @@ fun DIV.sidebar(
 
         // guide
         div("bottom-card") {
-            +"User Guide"
-            +"documentation"
+            div("book-icon") {
+                img(classes = "book-closed") {
+                    src = "/static/images/book_down.svg"
+                    alt = "Closed book"
+                }
+                img(classes = "book-open") {
+                    src = "/static/images/open_book.svg"
+                    alt = "Open book"
+                }
+            }
+            div("guide-text") {
+                div("guide-title") {
+                    +"User Guide"
+                }
+                div("guide-subtitle") {
+                    +"documentation"
+                }
+            }
+        }
+    }
+}
+
+fun DIV.dashBoard() {
+    div("dashboard") {
+        div("dashboard-user-info") {
+            div("dashboard-user-info-avatar") {
+
+            }
+            div("dashboard-user-info-content") {
+                div("dashboard-user-nickname") {
+                    +"用户昵称"
+                }
+                div("dashboard-user-role") {
+                    +"用户角色"
+                }
+            }
+        }
+
+        div("dashboard-info") {
+            div("dashboard-title") {
+                +"Dashboard"
+            }
+            div("dashboard-subtitle") {
+                +"Home / Dashboard"
+            }
+        }
+
+        div("dashboard-grid") {
+            div("dashboard-item")
+            div("dashboard-item")
+            div("dashboard-item")
+
+            div("visitor-growth") {
+                div("visitor-header") {
+                    div("dashboard-info") {
+                        div("dashboard-title") {
+                            +"Visitor Growth"
+                        }
+                        div("dashboard-subtitle") {
+                            +"Overall Information"
+                        }
+                    }
+                    div("time-selector") {
+                        div("time-button active") {
+                            +"Monthly"
+                        }
+                        div("time-button") {
+                            +"Yearly"
+                        }
+                    }
+                }
+                div("bar-chart") {
+
+                }
+            }
+            div("latest-post") {
+
+            }
         }
     }
 }
