@@ -37,7 +37,7 @@ fun DIV.sidebar(
     selected: Int = 0,
 ) {
     div("sidebar") {
-        div {
+        div("item") {
             h1 {
                 +username
             }

@@ -10,6 +10,12 @@ object Theme {
     val mainBg = Color("#eacccb")
     val radius = 16.px
     val marginToC = Margin(20.px)
+    val boxShadow = BoxShadow(
+        color = Color.black.withAlpha(0.2),
+        offsetX = 0.px,
+        offsetY = 4.px,
+        blurRadius = 12.px
+    )
 }
 
 fun CssBuilder.indexStyle() {
@@ -22,7 +28,7 @@ fun CssBuilder.indexStyle() {
         fontFamily = "Segoe UI, sans-serif"
         backgroundColor = Theme.mainBg
     }
-    ".container" {
+    rule(".container") {
         backgroundColor = Color.white
         minHeight = 100.vh - 40.px
         minWidth = 380.px
@@ -30,14 +36,11 @@ fun CssBuilder.indexStyle() {
         flexDirection = FlexDirection.row
         margin = Margin(20.px)
         borderRadius = 30.px
-        boxShadow += BoxShadow(
-            color = rgb(0, 0, 0, 0.1),
-            0.px, 4.px, 12.px
-        )
+        boxShadow += Theme.boxShadow
         gap = 20.px
         // flexWrap = FlexWrap.wrap
     }
-    ".sidebar" {
+    rule(".sidebar") {
         width = 240.px
         color = Color.white
         background = "linear-gradient(180deg, #f68a7e, #fa7268)"
@@ -47,8 +50,6 @@ fun CssBuilder.indexStyle() {
         flexDirection = FlexDirection.column
         justifyContent = JustifyContent.spaceBetween
         alignItems = Align.center
-        // padding = Padding(50.px, 0.px)
-        paddingTop = 100.px
         paddingBottom = 20.px
         flexShrink = 1
         overflow = Overflow.hidden
@@ -57,69 +58,78 @@ fun CssBuilder.indexStyle() {
         wordWrap = WordWrap.breakWord
         overflowWrap = OverflowWrap.breakWord
         wordBreak = WordBreak.breakWord
-    }
-    ".sidebar h1" {
-        fontSize = 24.px
-        marginBottom = 40.px
-    }
-    ".sidebar ul" {
-        listStyleType = ListStyleType.none
-    }
-    ".sidebar ul li" {
-        margin = Margin(20.px, 0.px)
-        fontWeight = FontWeight.w500
-        opacity = 0.9
-        whiteSpace = WhiteSpace.normal
-        overflow = Overflow.hidden
-        textOverflow = TextOverflow.ellipsis
-        wordBreak = WordBreak.breakWord
-        transition += Transition(duration = 0.3.s)
-    }
-    ".sidebar ul li:hover" {
-        transform.scale(1.05)
-    }
-    ".sidebar ul li.active" {
-        fontWeight = FontWeight.bold
-    }
-    ".sidebar .guide" {
-        backgroundColor = rgb(255, 255, 255, 0.2)
-        padding = Padding(18.px)
-        paddingRight = 50.px
-        borderRadius = Theme.radius
-        fontSize = 14.px
-        display = Display.flex
-        flexDirection = FlexDirection.row
-        gap = 5.px
-        alignItems = Align.center
-        transition += Transition(duration = 0.3.s)
-    }
-    ".sidebar .guide:hover" {
-        transform.scale(1.05)
-    }
-    val sidebarIcon = ".sidebar .guide .icon"
-    sidebarIcon {
-        display = Display.flex
-        alignItems = Align.center
-        position = Position.relative
-    }
-    "$sidebarIcon .closed" {
-        opacity = 1
-    }
-    "$sidebarIcon .open" {
-        opacity = 0
-        position = Position.absolute
-    }
-    "$sidebarIcon .open" {
-        opacity = 1
-    }
-    "$sidebarIcon .closed" {
-        opacity = 0
-    }
-    ".sidebar .guide .icon img" {
-        transition += Transition("opacity", duration = 0.3.s)
+        descendants(".item") {
+            height = 100.pct
+            display = Display.flex
+            flexDirection = FlexDirection.column
+            justifyContent = JustifyContent.spaceEvenly
+            descendants("h1") {
+                fontSize = 24.px
+                cursor = Cursor.pointer
+                transition += Transition(duration = 0.3.s)
+                hover {
+                    transform.scale(1.05)
+                }
+            }
+            descendants("ul") {
+                listStyleType = ListStyleType.none
+                descendants("li") {
+                    margin = Margin(25.px, 0.px)
+                    fontWeight = FontWeight.w500
+                    opacity = 0.9
+                    whiteSpace = WhiteSpace.normal
+                    overflow = Overflow.hidden
+                    textOverflow = TextOverflow.ellipsis
+                    wordBreak = WordBreak.breakWord
+                    transition += Transition(duration = 0.3.s)
+                    cursor = Cursor.pointer
+                    hover {
+                        transform.scale(1.05)
+                    }
+                }
+                descendants("li.active") {
+                    fontWeight = FontWeight.bold
+                }
+            }
+        }
+        descendants(".guide") {
+            backgroundColor = rgb(255, 255, 255, 0.2)
+            padding = Padding(18.px)
+            paddingRight = 50.px
+            borderRadius = Theme.radius
+            fontSize = 14.px
+            display = Display.flex
+            flexDirection = FlexDirection.row
+            gap = 5.px
+            alignItems = Align.center
+            transition += Transition(duration = 0.3.s)
+            descendants(".icon") {
+                display = Display.flex
+                alignItems = Align.center
+                position = Position.relative
+                descendants(".closed") {
+                    opacity = 1
+                }
+                descendants(".open") {
+                    opacity = 0
+                    position = Position.absolute
+                }
+                descendants("img") {
+                    transition += Transition("opacity", duration = 0.3.s)
+                }
+            }
+            hover {
+                transform.scale(1.05)
+                descendants(".icon .open") {
+                    opacity = 1
+                }
+                descendants(".icon .closed") {
+                    opacity = 0
+                }
+            }
+        }
     }
 }
-
 
 
 /*fun CssBuilder.indexStyle() {
