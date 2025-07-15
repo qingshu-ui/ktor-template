@@ -9,6 +9,12 @@ import me.qingshu.ktorexample.service.AuthService
 import org.koin.ktor.ext.inject
 import kotlin.time.Duration.Companion.days
 
+fun Application.configureAllInstall() {
+    configureAuthentication()
+    configureSessions()
+    install(RequestLoggingPlugin) { enable = false }
+}
+
 fun Application.configureSessions() {
     install(Sessions) {
         cookie<UserSession>("auth_session") {

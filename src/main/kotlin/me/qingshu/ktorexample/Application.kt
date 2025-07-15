@@ -4,6 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import me.qingshu.ktorexample.config.appModule
+import me.qingshu.ktorexample.config.plugin.configureAllInstall
 import me.qingshu.ktorexample.config.plugin.configureAuthentication
 import me.qingshu.ktorexample.config.plugin.configureSessions
 import me.qingshu.ktorexample.repository.SessionTable
@@ -39,8 +40,7 @@ fun initialDb() {
 }
 
 fun Application.module() {
-    configureAuthentication()
-    configureSessions()
+    configureAllInstall()
     configureCss()
     authRouting()
     configureRouting()

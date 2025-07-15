@@ -43,7 +43,7 @@ fun DIV.sidebar(
             }
             ul {
                 repeat(items.size) {
-                    val active = if(selected == it) "active" else null
+                    val active = if (selected == it) "active" else null
                     li(active) { +items[it] }
                 }
             }
@@ -64,193 +64,34 @@ fun DIV.sidebar(
     }
 }
 
-fun DIV.main() {
-    div("main")
-}
 
-// ---do
+data class NavItem(
+    val title: String,
+    val iconUrl: String,
+    val data: Int,
+)
 
-/*
-fun BODY.background(block: DIV.() -> Unit) {
-    div(classes = "background") {
-        block()
-    }
-}
+data class LatestPost(
+    val title: String,
+    val date: String,
+)
 
-fun DIV.content(block: DIV.() -> Unit) {
-    div(classes = "content") {
-        block()
-    }
-}
+val navItem = listOf(
+    NavItem("Posts", "/static/images/edit_rectangle_outline.svg", 10),
+    NavItem("Categories", "/static/images/apps_outline.svg", 3),
+    NavItem("Users", "/static/images/user_outline.svg", 2),
+)
 
-fun DIV.sidebar(
-    title: String = "Demo.",
-    items: List<String> = listOf(
-        "Dashboard",
-        "Posts",
-        "Categories",
-        "Media",
-        "Users",
-        "Settings",
-    ),
+val latestPost = listOf(
+    LatestPost("The Power of Dream", "28 June 2021"),
+    LatestPost("Emotional Healing", "22 June 2021"),
+    LatestPost("Works vs School", "21 June 2021"),
+)
+
+fun DIV.main(
+    userName: String = "Ryan Adhitama",
+    role: String = "Web Developer",
 ) {
-    div(classes = "sidebar") {
-        div(classes = "user-info") {
-            div(classes = "user-avatar") {
-
-            }
-            div("user-nickname") {
-                +title
-            }
-        }
-        // items
-        div("menu-items") {
-            repeat(items.size) { index ->
-                div("menu-item") {
-                    +items[index]
-                }
-            }
-        }
-
-        // guide
-        div("bottom-card") {
-            div("book-icon") {
-                img(classes = "book-closed") {
-                    src = "/static/images/book_down.svg"
-                    alt = "Closed book"
-                }
-                img(classes = "book-open") {
-                    src = "/static/images/open_book.svg"
-                    alt = "Open book"
-                }
-            }
-            div("guide-text") {
-                div("guide-title") {
-                    +"User Guide"
-                }
-                div("guide-subtitle") {
-                    +"documentation"
-                }
-            }
-        }
-    }
-}
-
-fun DIV.dashBoard() {
-    div("dashboard") {
-        div("dashboard-user-info") {
-            div("dashboard-user-info-avatar") {
-
-            }
-            div("dashboard-user-info-content") {
-                div("dashboard-user-nickname") {
-                    +"用户昵称"
-                }
-                div("dashboard-user-role") {
-                    +"用户角色"
-                }
-            }
-        }
-
-        div("dashboard-info") {
-            div("dashboard-title") {
-                +"Dashboard"
-            }
-            div("dashboard-subtitle") {
-                +"Home / Dashboard"
-            }
-        }
-
-        div("dashboard-grid") {
-            div("dashboard-item")
-            div("dashboard-item")
-            div("dashboard-item")
-
-            div("visitor-growth") {
-                div("visitor-header") {
-                    div("dashboard-info") {
-                        div("dashboard-title") {
-                            +"Visitor Growth"
-                        }
-                        div("dashboard-subtitle") {
-                            +"Overall Information"
-                        }
-                    }
-                    div("time-selector") {
-                        div("time-button active") {
-                            +"Monthly"
-                        }
-                        div("time-button") {
-                            +"Yearly"
-                        }
-                    }
-                }
-                div("bar-chart") {
-                    canvas {
-                        id = "visitorChart"
-                    }
-                }
-            }
-            div("latest-post") {
-
-            }
-        }
-    }
-}
-
-fun HTML.index2() {
-    head {
-        meta(charset = "UTF-8")
-        meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
-        link(rel = "stylesheet", href = "/index_style.css", type = "text/css")
-        title("Dashboard")
-    }
-
-    body {
-        div("container") {
-            sidebar()
-            main()
-        }
-    }
-}
-
-fun DIV.sidebar(
-    userName: String = "Scribble.",
-    items: List<String> = listOf(
-        "Dashboard",
-        "Posts",
-        "Categories",
-        "Media",
-        "Users",
-        "Settings",
-    ),
-    selected: Int = 0,
-) {
-    div("sidebar") {
-        div {
-            h1 {
-                +userName
-            }
-            ul {
-                repeat(items.size) {
-                    val active = if (it == selected) "active" else null
-                    ul(active) {
-                        +items[it]
-                    }
-                }
-            }
-        }
-        div("guide") {
-            +"User Guide"
-            br
-            small {
-                +"Documentation"
-            }
-        }
-    }
-}
-
-fun DIV.main() {
     div("main") {
         div("top-bar") {
             div("title") {
@@ -258,85 +99,59 @@ fun DIV.main() {
                 p { +"Home / Dashboard" }
             }
             div("user") {
-                img(src = "https://i.pravatar.cc/40?img=3", alt = "User")
+                img(alt = "User", src = "https://i.pravatar.cc/40?img=3")
                 div {
-                    strong { +"Ryan Adhitama" }
+                    strong { +userName }
                     br
-                    small { +"Web Developer" }
+                    small { +role }
                 }
             }
         }
         div("grid-layout") {
-            div("card") {
-                div {
-                    +"Posts"
-                    strong {
-                        +"10"
+            repeat(navItem.size) {
+                val title = navItem[it].title
+                val iconUrl = navItem[it].iconUrl
+                val data = navItem[it].data
+                div("card") {
+                    div {
+                        +title
+                        br
+                        strong { +data }
+                    }
+                    div("icon") {
+                        img(src = iconUrl)
                     }
                 }
-                div("icon") {
-                    +"📝"
-                }
             }
-            div("card") {
-                div {
-                    +"Categories"
-                    strong {
-                        +"3"
-                    }
-                }
-                div("icon") {
-                    +"🔲"
-                }
-            }
-            div("card") {
-                div {
-                    +"Users"
-                    strong {
-                        +"2"
-                    }
-                }
-                div("icon") {
-                    +"👤"
-                }
-            }
-
             div("visitor-growth") {
-                h3 { +"Visitor Growth" }
-                p { +"Overall Information" }
-                div("tabs") {
-                    button(classes = "active") { +"Monthly" }
-                    button { +"Yearly" }
+                div("info") {
+                    div {
+                        h3 { +"Visitor Growth" }
+                        p { +"Overall Information" }
+                    }
+                    div("tabs") {
+                        button(classes = "active") { +"Monthly" }
+                        button { +"Yearly" }
+                    }
                 }
                 div("chart") {
-                    div("chart-bar") { style = "height: 50%" }
-                    div("chart-bar") { style = "height: 60%" }
-                    div("chart-bar") { style = "height: 70%" }
-                    div("chart-bar highlight")
-                    div("chart-bar") { style = "height: 60%" }
-                    div("chart-bar") { style = "height: 50%" }
-                    div("chart-bar") { style = "height: 80%" }
+                    repeat(22) {
+                        div("chart-bar") {
+                            style = "height: 50%"
+                        }
+                    }
                 }
             }
-
             div("latest-posts") {
-                h4 { +"Latest Post" }
-                div("post") {
-                    +"The Power of Dream "
-                    br
-                    small { +"28 June 2021" }
-                }
-                div("post") {
-                    +"Emotional Healing "
-                    br
-                    small { +"22 June 2021" }
-                }
-                div("post") {
-                    +"Works vs School "
-                    br
-                    small { +"22 June 2021" }
+                h4 { +"Latest Posts" }
+                repeat(3) {
+                    div("post") {
+                        +latestPost[it].title
+                        br
+                        small { +latestPost[it].date }
+                    }
                 }
             }
         }
     }
-}*/
+}
