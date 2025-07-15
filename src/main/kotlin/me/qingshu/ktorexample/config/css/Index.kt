@@ -5,12 +5,124 @@ import kotlinx.css.properties.BoxShadow
 import kotlinx.css.properties.Transition
 import kotlinx.css.properties.s
 import kotlinx.css.properties.scale
-import kotlinx.css.properties.scaleX
-import kotlinx.css.properties.scaleY
-import kotlinx.css.properties.translate3d
-import kotlinx.css.properties.translateY
+
+object Theme {
+    val mainBg = Color("#eacccb")
+    val radius = 16.px
+    val marginToC = Margin(20.px)
+}
 
 fun CssBuilder.indexStyle() {
+    universal {
+        boxSizing = BoxSizing.borderBox
+        margin = Margin(0.px)
+        padding = Padding(0.px)
+    }
+    body {
+        fontFamily = "Segoe UI, sans-serif"
+        backgroundColor = Theme.mainBg
+    }
+    ".container" {
+        backgroundColor = Color.white
+        minHeight = 100.vh - 40.px
+        minWidth = 380.px
+        display = Display.flex
+        flexDirection = FlexDirection.row
+        margin = Margin(20.px)
+        borderRadius = 30.px
+        boxShadow += BoxShadow(
+            color = rgb(0, 0, 0, 0.1),
+            0.px, 4.px, 12.px
+        )
+        gap = 20.px
+        // flexWrap = FlexWrap.wrap
+    }
+    ".sidebar" {
+        width = 240.px
+        color = Color.white
+        background = "linear-gradient(180deg, #f68a7e, #fa7268)"
+        borderRadius = Theme.radius
+        margin = Theme.marginToC
+        display = Display.flex
+        flexDirection = FlexDirection.column
+        justifyContent = JustifyContent.spaceBetween
+        alignItems = Align.center
+        // padding = Padding(50.px, 0.px)
+        paddingTop = 100.px
+        paddingBottom = 20.px
+        flexShrink = 1
+        overflow = Overflow.hidden
+        minHeight = 100.pct
+        minWidth = 0.px
+        wordWrap = WordWrap.breakWord
+        overflowWrap = OverflowWrap.breakWord
+        wordBreak = WordBreak.breakWord
+    }
+    ".sidebar h1" {
+        fontSize = 24.px
+        marginBottom = 40.px
+    }
+    ".sidebar ul" {
+        listStyleType = ListStyleType.none
+    }
+    ".sidebar ul li" {
+        margin = Margin(20.px, 0.px)
+        fontWeight = FontWeight.w500
+        opacity = 0.9
+        whiteSpace = WhiteSpace.normal
+        overflow = Overflow.hidden
+        textOverflow = TextOverflow.ellipsis
+        wordBreak = WordBreak.breakWord
+        transition += Transition(duration = 0.3.s)
+    }
+    ".sidebar ul li:hover" {
+        transform.scale(1.05)
+    }
+    ".sidebar ul li.active" {
+        fontWeight = FontWeight.bold
+    }
+    ".sidebar .guide" {
+        backgroundColor = rgb(255, 255, 255, 0.2)
+        padding = Padding(18.px)
+        paddingRight = 50.px
+        borderRadius = Theme.radius
+        fontSize = 14.px
+        display = Display.flex
+        flexDirection = FlexDirection.row
+        gap = 5.px
+        alignItems = Align.center
+        transition += Transition(duration = 0.3.s)
+    }
+    ".sidebar .guide:hover" {
+        transform.scale(1.05)
+    }
+    val sidebarIcon = ".sidebar .guide .icon"
+    sidebarIcon {
+        display = Display.flex
+        alignItems = Align.center
+        position = Position.relative
+    }
+    "$sidebarIcon .closed" {
+        opacity = 1
+    }
+    "$sidebarIcon .open" {
+        opacity = 0
+        position = Position.absolute
+    }
+    "$sidebarIcon .open" {
+        opacity = 1
+    }
+    "$sidebarIcon .closed" {
+        opacity = 0
+    }
+    ".sidebar .guide .icon img" {
+        transition += Transition("opacity", duration = 0.3.s)
+    }
+}
+
+
+
+/*fun CssBuilder.indexStyle() {
     "html, body" {
         margin = Margin(0.px)
         padding = Padding(0.px)
@@ -87,6 +199,8 @@ fun CssBuilder.indexStyle() {
         gap = 15.px
         alignItems = Align.center
         marginTop = 15.px
+        minHeight = 0.px
+        flexShrink = 1
     }
     ".menu-item" {
         width = 100.pct
@@ -98,6 +212,8 @@ fun CssBuilder.indexStyle() {
         transition += Transition(duration = 0.3.s)
         outline = Outline.none
         border = Border.none
+        whiteSpace = WhiteSpace.nowrap
+        textOverflow = TextOverflow.ellipsis
     }
     ".menu-item:hover" {
         // backgroundColor = Color("#ffffff30")
@@ -237,6 +353,7 @@ fun CssBuilder.indexStyle() {
         columnGap = 60.px
         rowGap = 36.px
         width = 100.pct
+        height = 100.pct
         margin = Margin(36.px, 0.px)
     }
     ".dashboard-item" {
@@ -259,6 +376,7 @@ fun CssBuilder.indexStyle() {
     ".visitor-growth" {
         gridColumn = GridColumn("span 2")
         backgroundColor = Color("#ffffff")
+        height = 100.pct
     }
     ".visitor-header" {
         display = Display.flex
@@ -289,7 +407,230 @@ fun CssBuilder.indexStyle() {
     ".time-button:hover" {
         transform.scale(1.05)
     }
+    ".bar-chart" {
+        width = 100.pct
+        height = 60.pct
+    }
     ".latest-post" {
         // backgroundColor = Color("#ffffff")
     }
+}*/
+
+/*
+object Theme {
+    val mainColor = Color("#fa7268")
+    val cardBg = Color("#fff7f6")
+    val textDark = Color("#333")
+    val textLight = Color("#aaa")
+    val radius = 16.px
 }
+
+fun CssBuilder.indexStyle() {
+    universal {
+        boxSizing = BoxSizing.borderBox
+        margin = Margin(0.px)
+        padding = Padding(0.px)
+    }
+    body {
+        fontFamily = "Segoe UI, sans-serif"
+        backgroundColor = Theme.mainColor
+    }
+    ".container" {
+        display = Display.flex
+        flexDirection = FlexDirection.row
+        minHeight = 100.vh
+        padding = Padding(40.px, 20.px)
+        gap = 20.px
+        flexWrap = FlexWrap.wrap
+        minWidth = 380.px
+    }
+    ".sidebar" {
+        width = 240.px
+        background = "linear-gradient(180deg, #fa7268, #f68a7e)"
+        color = Color.white
+        borderRadius = Theme.radius
+        padding = Padding(30.px, 20.px)
+        display = Display.flex
+        flexDirection = FlexDirection.column
+        justifyContent = JustifyContent.spaceBetween
+        minHeight = 100.pct
+        wordWrap = WordWrap.breakWord
+        overflowWrap = OverflowWrap.breakWord
+        wordBreak = WordBreak.breakWord
+        minWidth = 0.px
+        flexShrink = 1
+        overflow = Overflow.hidden
+    }
+    ".sidebar h1" {
+        fontSize = 24.px
+        marginBottom = 40.px
+    }
+    ".sidebar ul" {
+        put("list-style", "none")
+    }
+    ".sidebar ul li" {
+        margin = Margin(20.px, 0.px)
+        fontWeight = FontWeight.w500
+        opacity = 0.9
+        whiteSpace = WhiteSpace.normal
+        overflow = Overflow.hidden
+        textOverflow = TextOverflow.ellipsis
+        wordBreak = WordBreak.breakWord
+    }
+    ".sidebar ul li.active" {
+        fontWeight = FontWeight.bold
+    }
+    ".sidebar .guide" {
+        backgroundColor = rgb(255, 255, 255, 0.1)
+        padding = Padding(15.px)
+        borderRadius = Theme.radius
+        fontSize = 14.px
+    }
+    ".main" {
+        flex = Flex(1)
+        backgroundColor = Color.white
+        borderRadius = Theme.radius
+        padding = Padding(30.px)
+        display = Display.flex
+        flexDirection = FlexDirection.column
+        gap = 20.px
+        overflow = Overflow.hidden
+        minWidth = 0.px
+    }
+    ".top-bar" {
+        display = Display.flex
+        justifyContent = JustifyContent.spaceBetween
+        alignItems = Align.center
+        flexWrap = FlexWrap.wrap
+        gap = 16.px
+    }
+    ".top-bar .title h2" {
+        color = Theme.textDark
+        fontSize = 22.px
+    }
+    ".top-bar .title p" {
+        fontSize = 14.px
+        color = Theme.textLight
+    }
+    ".top-bar .user" {
+        display = Display.flex
+        alignItems = Align.center
+        gap = 10.px
+    }
+    ".top-bar .user img" {
+        borderRadius = 50.pct
+        width = 40.px
+        height = 40.px
+    }
+    ".grid-layout" {
+        display = Display.grid
+        gridTemplateColumns = GridTemplateColumns.repeat("3, 1fr")
+        gap = 20.px
+    }
+    ".grid-layout .card" {
+        backgroundColor = Theme.cardBg
+        borderRadius = Theme.radius
+        padding = Padding(20.px)
+        display = Display.flex
+        justifyContent = JustifyContent.spaceBetween
+        alignItems = Align.center
+        color = Theme.textDark
+    }
+    ".grid-layout .card .icon" {
+        fontSize = 28.px
+        opacity = 0.5
+    }
+    ".grid-layout .visitor-growth" {
+        gridColumn = GridColumn("span 2")
+        backgroundColor = Color.white
+        borderRadius = Theme.radius
+        padding = Padding(20.px)
+    }
+    ".grid-layout .visitor-growth h3" {
+        marginBottom = 4.px
+    }
+    ".tabs" {
+        margin = Margin(10.px, 0.px)
+    }
+    ".tabs button" {
+        border = Border.none
+        padding = Padding(8.px, 16.px)
+        marginRight = 10.px
+        borderRadius = 20.px
+        backgroundColor = Color("#fce3e1")
+        color = Color("#fa7268")
+        fontWeight = FontWeight.bold
+        cursor = Cursor.pointer
+    }
+    ".tabs button.active" {
+        backgroundColor = Color("#fa7268")
+        color = Color.white
+    }
+    ".chart" {
+        marginTop = 10.px
+        height = 120.px
+        display = Display.flex
+        alignItems = Align.flexEnd
+        gap = 6.px
+    }
+    ".chart-bar" {
+        width = 10.px
+        background = "#fa7268"
+        borderRadius = 6.px
+        opacity = 0.3
+        height = 60.pct
+    }
+    ".chart-bar.highlight" {
+        opacity = 1
+        height = 90.pct
+    }
+    ".grid-layout .latest-posts" {
+        background = Color.white.toString()
+        borderRadius = Theme.radius
+        padding = Padding(20.px)
+    }
+    ".latest-posts h4" {
+        marginBottom = 10.px
+        backgroundColor = Theme.cardBg
+        display = Display.inlineBlock
+        padding = Padding(8.px, 16.px)
+        borderRadius = Theme.radius
+    }
+    ".latest-posts .post" {
+        marginTop = 8.px
+        fontSize = 14.px
+        color = Theme.textDark
+    }
+    ".latest-posts .post small" {
+        color = Theme.textLight
+    }
+    "@media(max-width: 1024px)" {
+        ".container" {
+            flexDirection = FlexDirection.column
+            padding = Padding(20.px)
+        }
+        ".sidebar" {
+            width = 100.pct
+            flexDirection = FlexDirection.row
+            alignItems = Align.center
+            justifyContent = JustifyContent.spaceBetween
+            minHeight = LinearDimension.auto
+        }
+        ".sidebar h1, .sidebar .guide" {
+            display = Display.none
+        }
+        ".main" {
+            marginLeft = 0.px
+        }
+        ".grid-layout" {
+            display = Display.flex
+            flexDirection = FlexDirection.column
+        }
+        ".grid-layout > *" {
+            width = 100.pct
+        }
+        ".grid-layout .visitor-growth" {
+            gridColumn = GridColumn.auto
+        }
+    }
+}*/
