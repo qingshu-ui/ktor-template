@@ -5,10 +5,8 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import me.qingshu.ktorexample.config.appModule
 import me.qingshu.ktorexample.config.plugin.configureAllInstall
-import me.qingshu.ktorexample.config.plugin.configureAuthentication
-import me.qingshu.ktorexample.config.plugin.configureSessions
-import me.qingshu.ktorexample.repository.SessionTable
-import me.qingshu.ktorexample.repository.UserTable
+import me.qingshu.ktorexample.repository.impl.SessionTable
+import me.qingshu.ktorexample.repository.impl.UserTable
 import me.qingshu.ktorexample.routing.authRouting
 import me.qingshu.ktorexample.routing.configureCss
 import me.qingshu.ktorexample.routing.configureRouting

@@ -20,7 +20,7 @@ class AuthServiceImpl(
     ): UserSession? {
         val user = userRepository.findByUsername(username) ?: return null
         return if (passwordEncoderService.verify(password, user.passwordHash!!)) {
-            val session = sessionRepository.findByUserId(user.id)
+            val session = sessionRepository.findByUserId(user.id!!)
             if (session == null) {
                 sessionRepository.create(user.id)
                 authenticate(username, password)
