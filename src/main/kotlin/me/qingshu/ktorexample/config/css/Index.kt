@@ -2,6 +2,7 @@ package me.qingshu.ktorexample.config.css
 
 import kotlinx.css.*
 import kotlinx.css.properties.BoxShadow
+import kotlinx.css.properties.LineHeight
 import kotlinx.css.properties.Transition
 import kotlinx.css.properties.s
 import kotlinx.css.properties.scale
@@ -41,7 +42,7 @@ fun CssBuilder.indexStyle() {
         boxShadow += Theme.boxShadow
         gap = 20.px
         padding = Padding(20.px)
-        // flexWrap = FlexWrap.wrap
+       // flexWrap = FlexWrap.wrap
     }
     rule(".sidebar") {
         width = 240.px
@@ -173,26 +174,42 @@ fun CssBuilder.indexStyle() {
         descendants(".grid-layout") {
             display = Display.grid
             gridTemplateColumns = GridTemplateColumns.repeat("3, 1fr")
-            gap = 20.px
+            gap = 30.px
             rowGap = 50.px
+            height = 100.pct
             descendants(".card") {
                 backgroundColor = Theme.cardBg
                 borderRadius = Theme.radius
                 padding = Padding(20.px)
                 display = Display.flex
-                justifyContent = JustifyContent.spaceBetween
+                justifyContent = JustifyContent.spaceAround
                 alignItems = Align.center
                 color = Theme.textDark
+                minHeight = 160.px
+                descendants("p") {
+                    lineHeight = LineHeight("2rem")
+                }
+                descendants("small") {
+                    color = Color("#ff6a64")
+                    fontSize = 20.px
+                }
                 descendants(".icon") {
-                    fontSize = 28.px
+                    width = 36.px
+                    height = 36.px
                     opacity = 0.5
+                    descendants("img") {
+                        width = 100.pct
+                        height = 100.pct
+                    }
                 }
             }
             descendants(".visitor-growth") {
                 gridColumn = GridColumn("span 2")
                 backgroundColor = Color.white
                 borderRadius = Theme.radius
-                //padding = Padding(20.px)
+                display = Display.flex
+                flexDirection = FlexDirection.column
+                rowGap = 20.px
                 descendants(".info") {
                     display = Display.flex
                     flexDirection = FlexDirection.row
@@ -222,22 +239,8 @@ fun CssBuilder.indexStyle() {
                 }
 
                 descendants(".chart") {
-                    marginTop = 10.px
-                    height = 120.px
-                    display = Display.flex
-                    alignItems = Align.flexEnd
-                    gap = 6.px
-                    descendants(".chart-bar") {
-                        width = 10.px
-                        backgroundColor = Color("#fa7268")
-                        borderRadius = 6.px
-                        opacity = 0.3
-                        height = 60.pt
-                        descendants(".highlight") {
-                            opacity = 1
-                            height = 90.pct
-                        }
-                    }
+                    width = 100.pct
+                    height = 100.pct
                 }
             }
             descendants(".latest-posts") {

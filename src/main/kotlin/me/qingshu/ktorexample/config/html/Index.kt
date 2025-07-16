@@ -114,9 +114,14 @@ fun DIV.main(
                 val data = navItem[it].data
                 div("card") {
                     div {
-                        +title
-                        br
-                        strong { +data }
+                        p {
+                            h3 {
+                                +title
+                            }
+                        }
+                        p {
+                            small { +"$data" }
+                        }
                     }
                     div("icon") {
                         img(src = iconUrl)
@@ -135,11 +140,7 @@ fun DIV.main(
                     }
                 }
                 div("chart") {
-                    repeat(22) {
-                        div("chart-bar") {
-                            style = "height: 50%"
-                        }
-                    }
+                    canvas { id = "visitorChart" }
                 }
             }
             div("latest-posts") {
