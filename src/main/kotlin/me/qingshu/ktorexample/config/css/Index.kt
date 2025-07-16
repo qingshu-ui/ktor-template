@@ -1,11 +1,7 @@
 package me.qingshu.ktorexample.config.css
 
 import kotlinx.css.*
-import kotlinx.css.properties.BoxShadow
-import kotlinx.css.properties.LineHeight
-import kotlinx.css.properties.Transition
-import kotlinx.css.properties.s
-import kotlinx.css.properties.scale
+import kotlinx.css.properties.*
 
 object Theme {
     val cardBg = Color("#fff7f6")
@@ -30,6 +26,11 @@ fun CssBuilder.indexStyle() {
     body {
         fontFamily = "Segoe UI, sans-serif"
         backgroundColor = Theme.mainBg
+        flexShrink = 1
+        height = 100.vh
+        overflow = Overflow.hidden
+        display = Display.flex
+        flexDirection = FlexDirection.column
     }
     rule(".container") {
         backgroundColor = Color.white
@@ -42,20 +43,19 @@ fun CssBuilder.indexStyle() {
         boxShadow += Theme.boxShadow
         gap = 20.px
         padding = Padding(20.px)
-       // flexWrap = FlexWrap.wrap
+        flexShrink = 1
+        // overflow = Overflow.hidden
+        // flexWrap = FlexWrap.wrap
     }
     rule(".sidebar") {
         width = 240.px
         color = Color.white
         background = "linear-gradient(180deg, #f68a7e, #fa7268)"
         borderRadius = Theme.radius
-        // margin = Theme.marginToC
         display = Display.flex
         flexDirection = FlexDirection.column
         justifyContent = JustifyContent.spaceBetween
         alignItems = Align.center
-        paddingBottom = 20.px
-        flexShrink = 1
         overflow = Overflow.hidden
         minHeight = 100.pct
         minWidth = 0.px
@@ -107,6 +107,7 @@ fun CssBuilder.indexStyle() {
             gap = 5.px
             alignItems = Align.center
             transition += Transition(duration = 0.3.s)
+            marginBottom = 20.px
             descendants(".icon") {
                 display = Display.flex
                 alignItems = Align.center
@@ -139,7 +140,7 @@ fun CssBuilder.indexStyle() {
         flex = Flex(1)
         backgroundColor = Color.white
         borderRadius = Theme.radius
-        padding = Padding(30.px)
+        //padding = Padding(30.px)
         gap = 20.px
         overflow = Overflow.hidden
         minWidth = 0.px
@@ -177,6 +178,7 @@ fun CssBuilder.indexStyle() {
             gap = 30.px
             rowGap = 50.px
             height = 100.pct
+            marginTop = 20.px
             descendants(".card") {
                 backgroundColor = Theme.cardBg
                 borderRadius = Theme.radius
@@ -246,7 +248,7 @@ fun CssBuilder.indexStyle() {
             descendants(".latest-posts") {
                 backgroundColor = Color.white
                 borderRadius = Theme.radius
-                //padding = Padding(20.px)
+                // padding = Padding(20.px)
                 descendants("h4") {
                     marginBottom = 10.px
                     backgroundColor = Theme.cardBg
