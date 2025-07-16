@@ -27,10 +27,9 @@ fun CssBuilder.indexStyle() {
         fontFamily = "Segoe UI, sans-serif"
         backgroundColor = Theme.mainBg
         flexShrink = 1
-        height = 100.vh
-        overflow = Overflow.hidden
         display = Display.flex
         flexDirection = FlexDirection.column
+        padding = Padding(20.px)
     }
     rule(".container") {
         backgroundColor = Color.white
@@ -38,14 +37,11 @@ fun CssBuilder.indexStyle() {
         minWidth = 380.px
         display = Display.flex
         flexDirection = FlexDirection.row
-        margin = Margin(20.px)
         borderRadius = 30.px
         boxShadow += Theme.boxShadow
         gap = 20.px
         padding = Padding(20.px)
         flexShrink = 1
-        // overflow = Overflow.hidden
-        // flexWrap = FlexWrap.wrap
     }
     rule(".sidebar") {
         width = 240.px
@@ -57,7 +53,6 @@ fun CssBuilder.indexStyle() {
         justifyContent = JustifyContent.spaceBetween
         alignItems = Align.center
         overflow = Overflow.hidden
-        minHeight = 100.pct
         minWidth = 0.px
         wordWrap = WordWrap.breakWord
         overflowWrap = OverflowWrap.breakWord
@@ -140,7 +135,7 @@ fun CssBuilder.indexStyle() {
         flex = Flex(1)
         backgroundColor = Color.white
         borderRadius = Theme.radius
-        //padding = Padding(30.px)
+        paddingTop = 20.px
         gap = 20.px
         overflow = Overflow.hidden
         minWidth = 0.px
@@ -175,19 +170,19 @@ fun CssBuilder.indexStyle() {
         descendants(".grid-layout") {
             display = Display.grid
             gridTemplateColumns = GridTemplateColumns.repeat("3, 1fr")
-            gap = 30.px
+            // gap = 30.px
+            columnGap = 80.px
             rowGap = 50.px
             height = 100.pct
             marginTop = 20.px
             descendants(".card") {
                 backgroundColor = Theme.cardBg
                 borderRadius = Theme.radius
-                padding = Padding(20.px)
                 display = Display.flex
                 justifyContent = JustifyContent.spaceAround
                 alignItems = Align.center
                 color = Theme.textDark
-                minHeight = 160.px
+                minHeight = 102.px
                 descendants("p") {
                     lineHeight = LineHeight("2rem")
                 }
@@ -248,6 +243,9 @@ fun CssBuilder.indexStyle() {
             descendants(".latest-posts") {
                 backgroundColor = Color.white
                 borderRadius = Theme.radius
+                child("*") {
+                    marginLeft = 5.px
+                }
                 // padding = Padding(20.px)
                 descendants("h4") {
                     marginBottom = 10.px
